@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Archive</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light py-4">
+    <div class="container">
+        <h1 class="mb-4">📁 PDF Archive</h1>
+
+        <div class="mb-4">
+            <form method="post" enctype="multipart/form-data" class="row g-2">
+                <div class="col-auto">
+                    <input class="form-control" type="file" name="file" required>
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-success">Convert & Add PDF</button>
+                </div>
+            </form>
+        </div>
+        <form method="get" class="mb-3">
+            <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Search by filename, repo, or date...">
+        </form>
+        <table class="table table-bordered table-hover bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Source File</th>
+                    <th>PDF</th>
+                    <th>Repository</th>
+                    <th>Commit</th>
+                    <th>Created</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pdf in pdfs %}
+                <tr>
+                    <td>{{ pdf[0] }}</td>
+                    <td>{{ pdf[1] }}</td>
+                    <td>{{ pdf[2] }}</td>
+                    <td>{{ pdf[3] }}</td>
+                    <td><code>{{ pdf[4][:7] }}</code></td>
+                    <td>{{ pdf[5][:19] }}</td>
+                    <td>
+                        <a href="{{ url_for('download_file', filename=pdf[2]) }}" class="btn btn-sm btn-primary">Download</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">No PDFs found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
